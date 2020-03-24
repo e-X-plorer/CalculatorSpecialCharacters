@@ -25,7 +25,7 @@ namespace CalculatorSpecialCharacters
                     Console.WriteLine("Empty string representing {0} found and skipped during initialization!", entry.Value);
                     continue;
                 }
-                if (cache[index] == null)
+                if (index > cache.Count)
                 {
                     cache.Capacity = index;
                 }
