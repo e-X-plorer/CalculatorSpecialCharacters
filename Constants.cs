@@ -12,30 +12,17 @@ namespace CalculatorSpecialCharacters
             ["e"] = 2.71828183
         };
 
-        private static List<Dictionary<string, double>> cache;
+        private static SortedDictionary<string, double> cache;
 
         private static void Init()
         {
-            cache = new List<Dictionary<string, double>>();
-            foreach (var entry in specialStrings)
-            {
-                int index = entry.Key.Length - 1;
-                if (index < 0)
-                {
-                    Console.WriteLine("Empty string representing {0} found and skipped during initialization!", entry.Value);
-                    continue;
-                }
-                if (index > cache.Count)
-                {
-                    cache.Capacity = index + 1;
-                }
-                cache[index].Add(entry.Key, entry.Value);
-            }
+            cache = new SortedDictionary<string, double>(specialStrings,
+                Comparer<string>.Create((string lhs, string rhs) => lhs.CompareTo(rhs)));
         }
 
         private static void SubstituteConstantsSinglePass(StringBuilder input, int pass)
         {
-            foreach (var entry in cache[pass])
+            foreach (var entry in cache)
             {
                 input.Replace(entry.Key, entry.Value.ToString());
             }
@@ -49,7 +36,7 @@ namespace CalculatorSpecialCharacters
                 Init();
             }
             StringBuilder inputBuilder = new StringBuilder(input);
-            for (int i = cache.Count - 1; i >= 0; i--)
+            for (int i = 0; i < cache.Count; i++)
             {
                 SubstituteConstantsSinglePass(inputBuilder, i);
             }
