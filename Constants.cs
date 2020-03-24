@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
+using System.Threading;
 
 namespace CalculatorSpecialCharacters
 {
@@ -17,7 +19,7 @@ namespace CalculatorSpecialCharacters
         private static void Init()
         {
             cache = new SortedDictionary<string, double>(specialStrings,
-                Comparer<string>.Create((string lhs, string rhs) => lhs.CompareTo(rhs)));
+                Comparer<string>.Create((string lhs, string rhs) => rhs.Length.CompareTo(lhs.Length)));
         }
 
         private static void SubstituteConstantsSinglePass(StringBuilder input, int pass)
@@ -31,6 +33,8 @@ namespace CalculatorSpecialCharacters
 
         public static string SubstituteConstants(string input)
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             if (cache == null)
             {
                 Init();
