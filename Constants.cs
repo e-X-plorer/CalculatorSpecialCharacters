@@ -27,7 +27,7 @@ namespace CalculatorSpecialCharacters
                 }
                 if (index > cache.Count)
                 {
-                    cache.Capacity = index;
+                    cache.Capacity = index + 1;
                 }
                 cache[index].Add(entry.Key, entry.Value);
             }
